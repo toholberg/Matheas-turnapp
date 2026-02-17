@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a0f">
+<title>Matheas Turnmål 🤸‍♀️</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='28' font-size='28'>🤸‍♀️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0a0a0f;
+  --bg-mid: #111827;
+  --bg-accent: #1a1033;
+  --orange: #f97316;
+  --orange-light: #fb923c;
+  --orange-glow: rgba(249,115,22,0.15);
+  --gold: #fbbf24;
+  --green: #10b981;
+  --green-light: #34d399;
+  --cyan: #22d3ee;
+  --red: #ef4444;
+  --text: #f0f0f0;
+  --text-dim: rgba(255,255,255,0.5);
+  --text-faint: rgba(255,255,255,0.3);
+  --border: rgba(255,255,255,0.07);
+  --card-bg: rgba(255,255,255,0.03);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { 
+  background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 35%, var(--bg-accent) 65%, var(--bg-deep) 100%);
+  font-family: 'Nunito', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden;
+}
+h1,h2,h3 { font-family: 'Outfit', sans-serif; }
+
+/* Background glows */
+.bg-glow { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; }
+.bg-glow-1 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(249,115,22,0.07), transparent); top: -5%; left: -5%; animation: glow 8s ease-in-out infinite; }
+.bg-glow-2 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(168,85,247,0.05), transparent); bottom: 10%; right: -3%; animation: glow 10s ease-in-out infinite 2s; }
+
+/* Animations */
+@keyframes glow { 0%,100% { opacity: 0.3; } 50% { opacity: 0.6; } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes cardIn { from { opacity: 0; transform: translateY(18px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
+@keyframes celebPop { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+.fade-in { animation: fadeIn 0.35s ease-out; }
+.card-in { animation: cardIn 0.4s ease-out both; }
+
+/* Header */
+.header { position: relative; z-index: 1; background: linear-gradient(135deg, rgba(249,115,22,0.1), rgba(168,85,247,0.05)); border-bottom: 1px solid rgba(249,115,22,0.15); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.header-inner { max-width: 960px; margin: 0 auto; padding: 20px 16px 16px; display: flex; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+.logo { font-size: 22px; font-weight: 900; letter-spacing: 2px; background: linear-gradient(135deg, var(--orange), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 8px; }
+.logo-emoji { font-size: 26px; -webkit-text-fill-color: initial; }
+.quote { margin-top: 4px; font-size: 12px; color: rgba(255,255,255,0.4); font-style: italic; }
+.stats-row { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+.stat-box { background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.18); border-radius: 10px; padding: 6px 10px; display: flex; flex-direction: column; align-items: center; min-width: 50px; }
+.stat-n { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: var(--orange-light); }
+.stat-l { font-size: 9px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.6px; }
+
+/* Nav */
+.nav { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 8px 16px 0; display: flex; gap: 3px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav::-webkit-scrollbar { display: none; }
+.nav-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px 10px 0 0; padding: 7px 12px; color: var(--text-dim); font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.nav-btn:hover { background: rgba(255,255,255,0.06); }
+.nav-btn.active { background: rgba(249,115,22,0.12); border-color: rgba(249,115,22,0.25); color: var(--orange-light); }
+
+/* Main */
+.main-content { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 18px 16px 80px; }
+
+/* Progress bars */
+.bar-outer { background: rgba(255,255,255,0.07); border-radius: 100px; height: 12px; overflow: hidden; position: relative; }
+.bar-inner { height: 100%; border-radius: 100px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden; background: linear-gradient(90deg, var(--orange), var(--orange-light)); }
+.bar-inner.done { background: linear-gradient(90deg, var(--green), var(--green-light)); }
+.bar-shine { position: absolute; top: 0; left: 0; width: 40%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); animation: shimmer 2.5s infinite; }
+.mini-bar { background: rgba(255,255,255,0.07); border-radius: 100px; height: 5px; overflow: hidden; margin-top: 8px; }
+.mini-fill { height: 100%; border-radius: 100px; transition: width 0.5s ease; background: linear-gradient(90deg, var(--orange), var(--orange-light)); }
+.mini-fill.done { background: linear-gradient(90deg, var(--green), var(--green-light)); }
+
+/* Overall card */
+.overall-card { background: linear-gradient(135deg, rgba(249,115,22,0.08), rgba(168,85,247,0.04)); border: 1px solid rgba(249,115,22,0.15); border-radius: 16px; padding: 18px 20px; margin-bottom: 20px; }
+.overall-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.overall-label { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.7); }
+.overall-pct { font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 900; color: var(--orange); }
+.overall-sub { margin-top: 7px; font-size: 11px; color: var(--text-faint); }
+
+/* Skill grid */
+.skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+.skill-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 16px 14px 12px; cursor: pointer; transition: all 0.2s; }
+.skill-card:active { transform: scale(0.97); }
+.skill-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+.skill-emoji { font-size: 28px; }
+.x-btn { background: none; border: none; color: rgba(255,255,255,0.15); font-size: 12px; cursor: pointer; padding: 2px 5px; }
+.skill-name { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 3px; }
+.diff-badge { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--text-faint); }
+.diff-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.skill-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+.skill-pct { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700; color: var(--text-dim); }
+.weekly-tag { font-size: 10px; color: var(--text-faint); }
+.add-card { background: rgba(249,115,22,0.04); border: 2px dashed rgba(249,115,22,0.2); border-radius: 14px; padding: 16px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 140px; transition: all 0.2s; }
+.add-card:active { transform: scale(0.97); }
+.add-icon { font-size: 30px; color: var(--orange); }
+.add-text { font-size: 12px; color: rgba(249,115,22,0.6); font-weight: 700; margin-top: 4px; }
+
+/* Detail view */
+.back-btn { background: none; border: none; color: var(--orange-light); font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; padding: 4px 0; margin-bottom: 14px; }
+.detail-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.detail-emoji { font-size: 42px; }
+.detail-name { font-size: 24px; font-weight: 900; color: #fff; }
+.detail-pct { font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 900; color: var(--orange); margin-left: auto; }
+
+.weekly-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-top: 16px; }
+.weekly-card .label { font-size: 12px; color: var(--text-dim); }
+.weekly-card .value { font-weight: 800; color: var(--orange-light); font-size: 16px; font-family: 'Outfit', sans-serif; }
+
+/* Sections */
+.section { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 18px 16px 14px; margin-top: 16px; }
+.section-title { font-size: 15px; font-weight: 800; margin-bottom: 12px; color: rgba(255,255,255,0.8); }
+
+/* Steps */
+.step-item { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 11px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: all 0.2s; margin-bottom: 5px; }
+.step-item:active { transform: scale(0.98); }
+.step-item.done { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.15); }
+.check { width: 24px; height: 24px; border-radius: 7px; border: 2px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.check.done { border-color: var(--green); background: linear-gradient(135deg, var(--green), var(--green-light)); color: #fff; font-weight: 800; }
+.step-text { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.85); }
+.step-text.done { color: rgba(255,255,255,0.4); text-decoration: line-through; }
+.step-sub { font-size: 10px; color: var(--text-faint); margin-top: 1px; }
+.done-tag { font-size: 10px; font-weight: 800; color: var(--green); background: rgba(16,185,129,0.1); padding: 3px 7px; border-radius: 5px; margin-left: auto; flex-shrink: 0; }
+
+/* Tips */
+.tip-row { display: flex; gap: 7px; align-items: flex-start; margin-bottom: 6px; }
+.tip-arr { color: var(--orange); font-weight: 800; font-size: 13px; line-height: 20px; }
+.tip-text { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 20px; }
+
+/* Video links */
+.video-link { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 9px; background: rgba(249,115,22,0.06); border: 1px solid rgba(249,115,22,0.12); margin-bottom: 5px; color: var(--orange-light); font-size: 13px; font-weight: 700; text-decoration: none; }
+.play-icon { font-size: 11px; background: rgba(249,115,22,0.2); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* Competition */
+.comp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px; margin-bottom: 22px; }
+.comp-title { font-size: 22px; font-weight: 900; color: #fff; }
+.comp-goal { font-size: 15px; color: var(--gold); font-weight: 700; margin-top: 3px; }
+.countdown-box { background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(234,88,12,0.08)); border: 1px solid rgba(249,115,22,0.3); border-radius: 16px; padding: 14px 20px; text-align: center; animation: pulse 3s ease-in-out infinite; }
+.countdown-num { font-family: 'Outfit', sans-serif; font-size: 38px; font-weight: 900; color: var(--orange); }
+.countdown-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+
+.timeline { display: flex; gap: 14px; }
+.timeline-track { width: 3px; background: rgba(255,255,255,0.06); border-radius: 100px; position: relative; flex-shrink: 0; }
+.timeline-fill { width: 100%; background: linear-gradient(180deg, var(--orange), var(--gold)); border-radius: 100px; position: absolute; top: 0; transition: height 0.5s ease; }
+.timeline-items { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
+.ms-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; cursor: pointer; transition: all 0.2s; }
+.ms-card:active { transform: scale(0.98); }
+.ms-card.current { border-color: rgba(249,115,22,0.35); background: rgba(249,115,22,0.06); }
+.ms-card.ms-done { border-color: rgba(16,185,129,0.2); background: rgba(16,185,129,0.04); }
+.ms-header { display: flex; align-items: center; gap: 8px; }
+.ms-check { width: 20px; height: 20px; border-radius: 6px; border: 2px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; color: var(--text-faint); }
+.ms-check.current { border-color: var(--orange); }
+.ms-check.done { border-color: var(--green); background: linear-gradient(135deg, var(--green), var(--green-light)); color: #fff; font-weight: 800; font-size: 10px; }
+.ms-name { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.85); }
+.ms-now { font-size: 10px; font-weight: 800; color: var(--orange); margin-left: 5px; }
+.ms-tasks { margin-top: 7px; padding-left: 28px; display: flex; flex-direction: column; gap: 3px; }
+.ms-task { display: flex; gap: 5px; font-size: 12px; color: rgba(255,255,255,0.6); }
+.ms-task.done { color: rgba(255,255,255,0.35); }
+.ms-task-check { color: var(--text-faint); }
+.ms-task.done .ms-task-check { color: var(--green); }
+
+.quote-box { margin-top: 20px; background: linear-gradient(135deg, rgba(251,191,36,0.08), rgba(249,115,22,0.04)); border: 1px solid rgba(251,191,36,0.15); border-radius: 14px; padding: 16px 18px; display: flex; gap: 10px; align-items: center; }
+.quote-box-icon { font-size: 20px; }
+.quote-box-text { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.65); font-style: italic; }
+
+/* Log */
+.log-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+.page-title { font-size: 22px; font-weight: 900; color: #fff; }
+.page-sub { font-size: 12px; color: var(--text-faint); margin-top: 3px; }
+
+.streak-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+.streak-day { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.streak-dot { width: 34px; height: 34px; border-radius: 9px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.streak-dot.active { background: rgba(249,115,22,0.12); border-color: rgba(249,115,22,0.3); }
+.streak-label { font-size: 10px; color: var(--text-faint); }
+
+.log-list { display: flex; flex-direction: column; gap: 6px; }
+.log-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 11px; background: var(--card-bg); border: 1px solid var(--border); }
+.log-emoji { font-size: 22px; }
+.log-name { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.8); }
+.log-note { font-size: 11px; color: var(--text-faint); margin-top: 1px; }
+.log-date { font-size: 11px; color: var(--text-faint); white-space: nowrap; margin-left: auto; }
+
+.empty-state { text-align: center; padding: 36px; color: var(--text-faint); font-size: 13px; }
+.empty-state .icon { font-size: 36px; margin-bottom: 8px; }
+
+/* Diary */
+.diary-form { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 18px; }
+.mood-row { display: flex; gap: 5px; margin-bottom: 10px; }
+.mood-btn { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 9px; padding: 6px 10px; font-size: 18px; cursor: pointer; transition: all 0.15s; }
+.mood-btn.active { border-color: var(--orange); background: rgba(249,115,22,0.12); }
+.diary-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 6px; }
+.diary-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.diary-mood { font-size: 22px; }
+.diary-text { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.5; }
+
+/* Badges */
+.badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.badge-card { background: rgba(249,115,22,0.06); border: 1px solid rgba(249,115,22,0.15); border-radius: 14px; padding: 18px 12px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.badge-card.locked { opacity: 0.3; filter: grayscale(1); }
+.badge-emoji { font-size: 30px; }
+.badge-name { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; color: #fff; }
+.badge-desc { font-size: 10px; color: var(--text-dim); line-height: 1.3; }
+
+/* Buttons & inputs */
+.btn-primary { padding: 9px 18px; border-radius: 10px; border: none; background: linear-gradient(135deg, var(--orange), #ea580c); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.btn-primary:active { transform: scale(0.96); }
+.btn-secondary { padding: 9px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-dim); font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.text-input { width: 100%; padding: 11px 14px; border-radius: 11px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-size: 14px; font-family: 'Nunito', sans-serif; outline: none; }
+.text-input:focus { border-color: rgba(249,115,22,0.4); }
+textarea.text-input { resize: none; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+.chip { padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: var(--text-dim); font-size: 12px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.chip.active { border-color: rgba(249,115,22,0.4); background: rgba(249,115,22,0.1); color: var(--orange-light); }
+.diff-row { display: flex; gap: 5px; }
+.diff-btn { background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.1); border-radius: 9px; padding: 7px 11px; font-size: 16px; cursor: pointer; }
+
+/* Modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); padding: 16px; }
+.modal-box { background: linear-gradient(145deg, #1a1a2e, #252545); border: 1px solid rgba(249,115,22,0.25); border-radius: 20px; padding: 24px; max-width: 400px; width: 100%; }
+.modal-title { font-size: 18px; font-weight: 800; margin-bottom: 14px; color: #fff; }
+.modal-actions { display: flex; gap: 7px; margin-top: 14px; justify-content: flex-end; }
+
+/* Celebration */
+.celeb-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.88); display: flex; align-items: center; justify-content: center; z-index: 1000; animation: celebPop 0.5s ease-out; }
+.celeb-content { text-align: center; padding: 30px; }
+.celeb-emoji { font-size: 64px; }
+.celeb-title { font-family: 'Outfit', sans-serif; font-size: 40px; font-weight: 900; color: var(--orange); letter-spacing: 3px; margin-top: 8px; }
+.celeb-sub { font-size: 18px; color: var(--gold); margin-top: 4px; }
+.celeb-confetti { font-size: 26px; margin-top: 10px; letter-spacing: 5px; }
+
+/* Hide views */
+.view { display: none; }
+.view.active { display: block; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .skill-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .badge-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-row { gap: 4px; }
+  .stat-box { padding: 5px 8px; min-width: 44px; }
+  .stat-n { font-size: 16px; }
+  .logo { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+
+<div id="celebration" class="celeb-overlay" style="display:none">
+  <div class="celeb-content">
+    <div class="celeb-emoji">🏆</div>
+    <div class="celeb-title">FANTASTISK!</div>
+    <div class="celeb-sub" id="celeb-text"></div>
+    <div class="celeb-confetti">🎉✨🎊⭐🎉✨🎊</div>
+  </div>
+</div>
+
+<header class="header">
+  <div class="header-inner">
+    <div style="flex:1">
+      <h1 class="logo"><span class="logo-emoji">🤸‍♀️</span> MATHEAS TURNMÅL</h1>
+      <p class="quote" id="header-quote"></p>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box"><span style="font-size:11px">🔥</span><span class="stat-n" id="stat-streak">0</span><span class="stat-l">streak</span></div>
+      <div class="stat-box"><span style="font-size:11px">✅</span><span class="stat-n" id="stat-done">0</span><span class="stat-l">fullført</span></div>
+      <div class="stat-box"><span style="font-size:11px">⏰</span><span class="stat-n" id="stat-days">0</span><span class="stat-l">dager</span></div>
+      <div class="stat-box"><span style="font-size:11px">🏅</span><span class="stat-n" id="stat-badges">0</span><span class="stat-l">badges</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav" id="nav"></nav>
+
+<main class="main-content">
+  <div id="view-dashboard" class="view active"></div>
+  <div id="view-detail" class="view"></div>
+  <div id="view-competition" class="view"></div>
+  <div id="view-log" class="view"></div>
+  <div id="view-diary" class="view"></div>
+  <div id="view-badges" class="view"></div>
+</main>
+
+<div id="modal-container"></div>
+
+<script>
+// ===== DATA =====
+const QUOTES = [
+  "Du er sterkere enn du tror! 💪","Hver trening gjør deg bedre! 🌟","Champions trener også når det er vanskelig! 🏆",
+  "Én steg om gangen – du klarer dette! ⚡","Tro på deg selv, Mathea! 🤸‍♀️","Øvelse gjør mester! 🔥",
+  "Du er en fighter! 💫","Neste mål er innen rekkevidde! 🎯","Drømmer du det, kan du gjøre det! ✨",
+  "Press litt hardere i dag enn i går! 🚀","Motet ditt inspirerer! 🦁","Små steg, store resultater! 🏅",
+  "Gi alt – hver gang! 💥","Du bygger noe stort, dag for dag! 🏗️","Alle mesterne startet som nybegynnere! 🌱",
+  "Du eier denne dagen! 👑","Fall sju ganger, reis deg åtte! 🔄","Din innsats i dag = din seier i morgen! 🌅",
+  "Vær modig, vær sterk, vær deg selv! 💎","Konkurransen venter – du er klar! 🥇",
+];
+
+const DIFF = [
+  {l:1,n:"Nybegynner",c:"#22d3ee",e:"🌱"},{l:2,n:"Lett",c:"#34d399",e:"🌿"},
+  {l:3,n:"Middels",c:"#fbbf24",e:"⭐"},{l:4,n:"Vanskelig",c:"#f97316",e:"🔥"},{l:5,n:"Ekspert",c:"#ef4444",e:"💎"}
+];
+
+const COMP_DATE = new Date("2026-04-06T10:00:00");
+
+const BADGES = [
+  {id:"first_step",name:"Første steg",emoji:"🌱",desc:"Fullført ditt første delmål",check:s=>s.completed>=1},
+  {id:"five_steps",name:"På god vei",emoji:"⭐",desc:"Fullført 5 delmål",check:s=>s.completed>=5},
+  {id:"ten_steps",name:"Superstjerne",emoji:"🌟",desc:"Fullført 10 delmål",check:s=>s.completed>=10},
+  {id:"fifteen_steps",name:"Ustoppelig",emoji:"🔥",desc:"Fullført 15 delmål",check:s=>s.completed>=15},
+  {id:"skill_master",name:"Element-mester",emoji:"🏆",desc:"Mestret et helt element",check:s=>s.hasMastered},
+  {id:"streak3",name:"Treningsmaskin",emoji:"🔗",desc:"3 dager på rad",check:s=>s.streak>=3},
+  {id:"streak7",name:"Ukesstreak",emoji:"💪",desc:"7 dager på rad",check:s=>s.streak>=7},
+  {id:"logger",name:"Dagbokfører",emoji:"📝",desc:"Skrevet 5 treningsnotater",check:s=>s.diaryCount>=5},
+];
+
+const DEFAULT_DATA = {
+  skills: [
+    {
+      id:"1",name:"Araber",category:"Akrobatikk",emoji:"🌟",difficulty:3,weeklyGoal:3,
+      steps:[{name:"Hold balanse 3 sek",done:false},{name:"Hold balanse 5 sek",done:false},{name:"Rett bakben over 90°",done:false},{name:"Full araber – hold 3 sek",done:false},{name:"Full araber i serie",done:false}],
+      tips:["Fokuser på et punkt foran deg for balanse","Press hoftene fremover og strekk bakbenet","Tren kjernemuskulatur – planken er din bestevenn!","Start ved veggen for støtte"],
+      videos:[{title:"Arabesque tutorial",url:"https://www.youtube.com/results?search_query=arabesque+gymnastics+tutorial"},{title:"Balanseøvelser for turn",url:"https://www.youtube.com/results?search_query=gymnastics+balance+drills"}]
+    },
+    {
+      id:"2",name:"Flikk-flakk",category:"Akrobatikk",emoji:"⚡",difficulty:4,weeklyGoal:4,
+      steps:[{name:"God bro fra gulvet",done:false},{name:"Handstående mot vegg – 10 sek",done:false},{name:"Flikk-flakk med spotter",done:false},{name:"Flikk-flakk over rulle",done:false},{name:"Flikk-flakk alene!",done:false}],
+      tips:["Sett deg ned som om du setter deg på en stol","Armene skal gå BAKOVER og OPP","Press fra skuldrene i handstående-fasen","Tren broen hver dag for å bli smidig nok"],
+      videos:[{title:"Back handspring tutorial",url:"https://www.youtube.com/results?search_query=back+handspring+tutorial+beginner"},{title:"Flikk-flakk drills",url:"https://www.youtube.com/results?search_query=back+handspring+drills"}]
+    },
+    {
+      id:"3",name:"Hjul",category:"Akrobatikk",emoji:"🔥",difficulty:2,weeklyGoal:2,
+      steps:[{name:"Hjul med hjelp",done:false},{name:"Hjul alene – begge sider",done:false},{name:"Hjul med rette ben",done:false},{name:"Hjul i linje",done:false},{name:"Enarms hjul",done:false}],
+      tips:["Tenk: hånd-hånd-fot-fot i en rett linje","Se på hendene dine hele veien","Spark skikkelig opp med bakbenet","Tren mot en vegg for å holde linja"],
+      videos:[{title:"Cartwheel tutorial",url:"https://www.youtube.com/results?search_query=cartwheel+tutorial+gymnastics"}]
+    }
+  ],
+  log: [],
+  diary: [],
+  compMilestones: [
+    {week:1,name:"Uke 1–2: Grunnlag",tasks:["Perfekter araber med god form","Bro & skulder-smidighet daglig","Handstående mot vegg 3×10 sek"],done:false},
+    {week:2,name:"Uke 2–3: Flikk-flakk #1",tasks:["Flikk-flakk med spotter – fokus på teknikk","Araber inn i flikk-flakk med hjelp","Kjernetrening: hollow hold 3×20 sek"],done:false},
+    {week:3,name:"Uke 3–4: Kobling",tasks:["Araber → flikk-flakk med spotter","Flikk-flakk alene (om klar)","Jobb med fart og flyt mellom elementene"],done:false},
+    {week:4,name:"Uke 4–5: Flikk-flakk #2",tasks:["Dobbel flikk-flakk med spotter","Araber → flikk-flakk → flikk-flakk med hjelp","Fokus: hopp rett inn i neste flikk-flakk"],done:false},
+    {week:5,name:"Uke 5–6: Selvstendig",tasks:["Full serie uten spotter","Konsistens: 3 av 5 gode forsøk","Finpuss landing og linjer"],done:false},
+    {week:6,name:"Uke 6–7: Konkurranseform",tasks:["Full serie med selvtillit","Simuler konkurranse: vis for venner/familie","Mental prep: visualiser serien"],done:false},
+    {week:7,name:"Konkurranseuke!",tasks:["Lett trening – hold kroppen fresh","Kjør serien 2–3 ganger, ikke mer","Du er KLAR! 🏆"],done:false}
+  ]
+};
+
+// ===== STATE =====
+let data, currentView = "dashboard", selectedSkillId = null;
+
+function loadData() {
+  try {
+    const saved = localStorage.getItem("mathea-turnmal-v5");
+    if (saved) { data = JSON.parse(saved); return; }
+  } catch(e) {}
+  data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+
+function saveData() {
+  try { localStorage.setItem("mathea-turnmal-v5", JSON.stringify(data)); } catch(e) {}
+}
+
+function today() { return new Date().toISOString().slice(0,10); }
+
+function daysUntilComp() { return Math.max(0, Math.ceil((COMP_DATE - new Date()) / 86400000)); }
+function weeksUntilComp() { return Math.max(0, Math.ceil(daysUntilComp() / 7)); }
+
+function getStreak() {
+  if (!data.log.length) return 0;
+  const dates = [...new Set(data.log.map(l=>l.date))].sort().reverse();
+  const t = today(), y = new Date(Date.now()-86400000).toISOString().slice(0,10);
+  if (dates[0]!==t && dates[0]!==y) return 0;
+  let s = 1;
+  for (let i=1;i<dates.length;i++){
+    const diff = (new Date(dates[i-1])-new Date(dates[i]))/86400000;
+    if(diff===1)s++; else break;
+  }
+  return s;
+}
+
+function weeklyCount(skillId) {
+  const now = new Date(), ws = new Date(now);
+  ws.setDate(now.getDate()-now.getDay()+1); ws.setHours(0,0,0,0);
+  const wstr = ws.toISOString().slice(0,10);
+  return data.log.filter(l=>l.date>=wstr&&(!skillId||l.skillId===skillId)).length;
+}
+
+function getCompleted() { return data.skills.reduce((a,s)=>a+s.steps.filter(st=>st.done).length,0); }
+function getTotal() { return data.skills.reduce((a,s)=>a+s.steps.length,0); }
+function hasMastered() { return data.skills.some(s=>s.steps.every(st=>st.done)); }
+function skillProgress(sk) { return sk.steps.length ? Math.round(sk.steps.filter(s=>s.done).length/sk.steps.length*100) : 0; }
+
+function getEarnedBadges() {
+  const s = { completed:getCompleted(), streak:getStreak(), hasMastered:hasMastered(), diaryCount:data.diary.length };
+  return BADGES.filter(b=>b.check(s));
+}
+
+// ===== RENDERING =====
+function h(tag,attrs,...children) {
+  const el = document.createElement(tag);
+  if(attrs) Object.entries(attrs).forEach(([k,v])=>{
+    if(k==='style'&&typeof v==='object') Object.assign(el.style,v);
+    else if(k.startsWith('on')) el.addEventListener(k.slice(2).toLowerCase(),v);
+    else if(k==='className') el.className=v;
+    else if(k==='htmlFor') el.htmlFor=v;
+    else el.setAttribute(k,v);
+  });
+  children.flat().forEach(c=>{ if(c!=null) el.append(typeof c==='string'?document.createTextNode(c):c); });
+  return el;
+}
+
+function updateStats() {
+  document.getElementById('stat-streak').textContent = getStreak();
+  document.getElementById('stat-done').textContent = getCompleted();
+  document.getElementById('stat-days').textContent = daysUntilComp();
+  document.getElementById('stat-badges').textContent = getEarnedBadges().length;
+  document.getElementById('header-quote').textContent = '"'+QUOTES[Math.floor(Math.random()*QUOTES.length)]+'"';
+}
+
+function renderNav() {
+  const nav = document.getElementById('nav');
+  nav.innerHTML = '';
+  const tabs = [
+    {id:"dashboard",label:"📊 Mål"},{id:"competition",label:"🥇 Konkurranse"},
+    {id:"log",label:"📋 Treningslogg"},{id:"diary",label:"📝 Dagbok"},{id:"badges",label:"🏅 Badges"}
+  ];
+  tabs.forEach(t=>{
+    const btn = h('button',{className:'nav-btn'+(currentView===t.id&&!selectedSkillId?' active':''),onClick:()=>{currentView=t.id;selectedSkillId=null;render();}},t.label);
+    nav.appendChild(btn);
+  });
+}
+
+function showCelebration(name) {
+  document.getElementById('celeb-text').textContent = 'Du har mestret '+name+'!';
+  document.getElementById('celebration').style.display = 'flex';
+  setTimeout(()=>{ document.getElementById('celebration').style.display='none'; },3500);
+}
+
+function showModal(content) {
+  const container = document.getElementById('modal-container');
+  const overlay = h('div',{className:'modal-overlay',onClick:()=>{container.innerHTML='';}},
+    h('div',{className:'modal-box',onClick:e=>e.stopPropagation()},content)
+  );
+  container.innerHTML = '';
+  container.appendChild(overlay);
+}
+
+function closeModal() { document.getElementById('modal-container').innerHTML=''; }
+
+// ===== VIEW RENDERERS =====
+function renderDashboard() {
+  const el = document.getElementById('view-dashboard');
+  el.innerHTML = '';
+  const total = getTotal(), completed = getCompleted();
+  const pct = total?Math.round(completed/total*100):0;
+
+  // Overall
+  const oc = h('div',{className:'overall-card fade-in'},
+    h('div',{className:'overall-row'},h('span',{className:'overall-label'},'Total fremgang'),h('span',{className:'overall-pct'},pct+'%')),
+    h('div',{className:'bar-outer'},h('div',{className:'bar-inner'+(pct===100?' done':''),style:{width:pct+'%'}},h('div',{className:'bar-shine'}))),
+    h('p',{className:'overall-sub'},completed+' av '+total+' delmål fullført')
+  );
+  el.appendChild(oc);
+
+  // Grid
+  const grid = h('div',{className:'skill-grid'});
+  data.skills.forEach((sk,i)=>{
+    const p = skillProgress(sk), d = DIFF[sk.difficulty-1], wc = weeklyCount(sk.id);
+    const card = h('div',{className:'skill-card card-in',style:{animationDelay:i*0.07+'s'},onClick:()=>{selectedSkillId=sk.id;currentView='detail';render();}},
+      h('div',{className:'skill-top'},
+        h('span',{className:'skill-emoji'},sk.emoji),
+        h('button',{className:'x-btn',onClick:e=>{e.stopPropagation();data.skills=data.skills.filter(s=>s.id!==sk.id);saveData();render();}},'✕')
+      ),
+      h('div',{className:'skill-name'},sk.name),
+      h('div',{className:'diff-badge'},h('span',{className:'diff-dot',style:{background:d.c}}),d.n),
+      h('div',{className:'mini-bar'},h('div',{className:'mini-fill'+(p===100?' done':''),style:{width:p+'%'}})),
+      h('div',{className:'skill-bottom'},
+        h('span',{className:'skill-pct'},p===100?'✅ Mestret!':p+'%'),
+        h('span',{className:'weekly-tag'},wc+'/'+sk.weeklyGoal+' denne uken')
+      )
+    );
+    grid.appendChild(card);
+  });
+
+  // Add card
+  const addCard = h('div',{className:'add-card card-in',onClick:()=>showAddSkillModal()},
+    h('span',{className:'add-icon'},'+'),h('span',{className:'add-text'},'Nytt element')
+  );
+  grid.appendChild(addCard);
+  el.appendChild(grid);
+}
+
+function showAddSkillModal() {
+  let name='', diff=3;
+  const nameInput = h('input',{className:'text-input',placeholder:'Navn, f.eks. Salto, Spagat...',onInput:e=>{name=e.target.value;}});
+  const diffRow = h('div',{className:'diff-row'});
+  DIFF.forEach(d=>{
+    const btn = h('button',{className:'diff-btn',onClick:()=>{diff=d.l;diffRow.querySelectorAll('.diff-btn').forEach(b=>b.style.borderColor='rgba(255,255,255,0.1)');btn.style.borderColor=d.c;}},d.e);
+    if(d.l===3) btn.style.borderColor=d.c;
+    diffRow.appendChild(btn);
+  });
+  showModal(h('div',{},
+    h('h3',{className:'modal-title'},'🌟 Nytt element'),
+    nameInput,
+    h('p',{style:{margin:'12px 0 6px',fontSize:'12px',color:'rgba(255,255,255,0.4)'}},'Vanskelighetsgrad:'),
+    diffRow,
+    h('div',{className:'modal-actions'},
+      h('button',{className:'btn-secondary',onClick:closeModal},'Avbryt'),
+      h('button',{className:'btn-primary',onClick:()=>{
+        if(!name.trim())return;
+        data.skills.push({id:Date.now().toString(),name:name.trim(),category:'Egendefinert',emoji:'✨',difficulty:diff,weeklyGoal:3,
+          steps:[{name:'Steg 1 – Kom i gang',done:false},{name:'Steg 2 – Øv med hjelp',done:false},{name:'Steg 3 – Prøv alene',done:false},{name:'Steg 4 – Mestre det!',done:false}],
+          tips:['Spør treneren om tips!','Tren litt hver dag','Film deg selv for å se fremgang'],videos:[]});
+        saveData();closeModal();render();
+      }},'Legg til')
+    )
+  ));
+  setTimeout(()=>nameInput.focus(),100);
+}
+
+function renderDetail() {
+  const el = document.getElementById('view-detail');
+  el.innerHTML = '';
+  const sk = data.skills.find(s=>s.id===selectedSkillId);
+  if(!sk){currentView='dashboard';render();return;}
+  const p = skillProgress(sk), d = DIFF[sk.difficulty-1], wc = weeklyCount(sk.id);
+
+  el.appendChild(h('div',{className:'fade-in'},
+    h('button',{className:'back-btn',onClick:()=>{selectedSkillId=null;currentView='dashboard';render();}},'← Tilbake'),
+    h('div',{className:'detail-head'},
+      h('span',{className:'detail-emoji'},sk.emoji),
+      h('div',{style:{flex:1}},h('h2',{className:'detail-name'},sk.name),h('div',{className:'diff-badge'},h('span',{className:'diff-dot',style:{background:d.c}}),d.n)),
+      h('div',{className:'detail-pct'},p+'%')
+    ),
+    h('div',{className:'bar-outer'},h('div',{className:'bar-inner'+(p===100?' done':''),style:{width:p+'%'}},h('div',{className:'bar-shine'}))),
+
+    // Weekly
+    h('div',{className:'weekly-card',style:{marginTop:'14px'}},
+      h('span',{className:'label'},'Denne uken: '),
+      h('span',{className:'value'},wc+' / '+sk.weeklyGoal+' treninger'),
+      h('div',{className:'mini-bar'},h('div',{className:'mini-fill'+(wc>=sk.weeklyGoal?' done':''),style:{width:Math.min(100,wc/sk.weeklyGoal*100)+'%'}}))
+    ),
+
+    // Steps
+    renderSteps(sk),
+    renderTips(sk),
+    renderVideos(sk)
+  ));
+}
+
+function renderSteps(sk) {
+  const sec = h('div',{className:'section',style:{marginTop:'14px'}},h('h3',{className:'section-title'},'🎯 Delmål'));
+  sk.steps.forEach((step,idx)=>{
+    const item = h('div',{className:'step-item'+(step.done?' done':''),onClick:()=>{
+      step.done=!step.done;
+      const newP = skillProgress(sk);
+      if(newP===100 && !step.done===false) showCelebration(sk.name);
+      saveData();render();
+    }},
+      h('div',{className:'check'+(step.done?' done':'')},step.done?'✓':''),
+      h('div',{style:{flex:1}},
+        h('div',{className:'step-text'+(step.done?' done':'')},step.name),
+        h('div',{className:'step-sub'},'Steg '+(idx+1)+' av '+sk.steps.length)
+      ),
+      step.done?h('span',{className:'done-tag'},'Klart!'):null
+    );
+    sec.appendChild(item);
+  });
+  return sec;
+}
+
+function renderTips(sk) {
+  const sec = h('div',{className:'section',style:{marginTop:'14px'}},h('h3',{className:'section-title'},'💡 Tips & øvelser'));
+  sk.tips.forEach(t=>{
+    sec.appendChild(h('div',{className:'tip-row'},h('span',{className:'tip-arr'},'▸'),h('span',{className:'tip-text'},t)));
+  });
+  return sec;
+}
+
+function renderVideos(sk) {
+  if(!sk.videos||!sk.videos.length) return h('div');
+  const sec = h('div',{className:'section',style:{marginTop:'14px'}},h('h3',{className:'section-title'},'🎬 Videoer'));
+  sk.videos.forEach(v=>{
+    sec.appendChild(h('a',{className:'video-link',href:v.url,target:'_blank',rel:'noopener noreferrer'},
+      h('span',{className:'play-icon'},'▶'),v.title
+    ));
+  });
+  return sec;
+}
+
+function renderCompetition() {
+  const el = document.getElementById('view-competition');
+  el.innerHTML = '';
+  const dl = daysUntilComp(), wl = weeksUntilComp(), cw = Math.min(7-wl,6);
+
+  const container = h('div',{className:'fade-in'},
+    h('div',{className:'comp-header'},
+      h('div',{},h('h2',{className:'comp-title'},'🥇 Konkurransemål'),h('p',{className:'comp-goal'},'Araber → Flikk-flakk → Flikk-flakk')),
+      h('div',{className:'countdown-box'},h('div',{className:'countdown-num'},dl.toString()),h('div',{className:'countdown-label'},'dager igjen'))
+    )
+  );
+
+  const timeline = h('div',{className:'timeline'});
+  const track = h('div',{className:'timeline-track'},h('div',{className:'timeline-fill',style:{height:Math.min(100,(7-wl)/7*100)+'%'}}));
+  const items = h('div',{className:'timeline-items'});
+
+  data.compMilestones.forEach((ms,idx)=>{
+    const isCurrent=idx===cw, isPast=idx<cw;
+    const card = h('div',{className:'ms-card'+(isCurrent?' current':'')+(ms.done?' ms-done':''),onClick:()=>{ms.done=!ms.done;saveData();render();}},
+      h('div',{className:'ms-header'},
+        h('div',{className:'ms-check'+(ms.done?' done':isCurrent?' current':'')},ms.done?'✓':isPast?'·':''),
+        h('div',{style:{flex:1}},h('span',{className:'ms-name'},ms.name),isCurrent?h('span',{className:'ms-now'},'← DU ER HER'):null)
+      )
+    );
+    const tasks = h('div',{className:'ms-tasks'});
+    ms.tasks.forEach(t=>{
+      tasks.appendChild(h('div',{className:'ms-task'+(ms.done?' done':'')},
+        h('span',{className:'ms-task-check'},ms.done?'✓':'○'),h('span',{},t)
+      ));
+    });
+    card.appendChild(tasks);
+    items.appendChild(card);
+  });
+
+  timeline.appendChild(track);
+  timeline.appendChild(items);
+  container.appendChild(timeline);
+
+  // Quote
+  container.appendChild(h('div',{className:'quote-box'},
+    h('span',{className:'quote-box-icon'},'💬'),
+    h('p',{className:'quote-box-text'},QUOTES[Math.floor(Math.random()*QUOTES.length)])
+  ));
+
+  el.appendChild(container);
+}
+
+function renderLog() {
+  const el = document.getElementById('view-log');
+  el.innerHTML = '';
+  const streak = getStreak();
+
+  const container = h('div',{className:'fade-in'},
+    h('div',{className:'log-header'},
+      h('div',{},h('h2',{className:'page-title'},'📋 Treningslogg'),h('p',{className:'page-sub'},'Streak: '+streak+' dag'+(streak!==1?'er':'')+' på rad! 🔥')),
+      h('button',{className:'btn-primary',onClick:showLogModal},'+ Logg trening')
+    )
+  );
+
+  // Streak viz
+  const sr = h('div',{className:'streak-row'});
+  const dayNames = ['Sø','Ma','Ti','On','To','Fr','Lø'];
+  for(let i=0;i<7;i++){
+    const d = new Date(); d.setDate(d.getDate()-(6-i));
+    const ds = d.toISOString().slice(0,10);
+    const has = data.log.some(l=>l.date===ds);
+    sr.appendChild(h('div',{className:'streak-day'},
+      h('div',{className:'streak-dot'+(has?' active':'')},has?'🔥':''),
+      h('span',{className:'streak-label'},dayNames[d.getDay()])
+    ));
+  }
+  container.appendChild(sr);
+
+  if(!data.log.length){
+    container.appendChild(h('div',{className:'empty-state'},h('div',{className:'icon'},'📋'),h('p',{},'Ingen treninger logget ennå!')));
+  } else {
+    const list = h('div',{className:'log-list'});
+    [...data.log].reverse().forEach(entry=>{
+      const sk = data.skills.find(s=>s.id===entry.skillId);
+      list.appendChild(h('div',{className:'log-item'},
+        h('div',{className:'log-emoji'},sk?sk.emoji:'🤸‍♀️'),
+        h('div',{style:{flex:1}},h('div',{className:'log-name'},sk?sk.name:'Generell'),entry.note?h('div',{className:'log-note'},entry.note):null),
+        h('div',{className:'log-date'},entry.date)
+      ));
+    });
+    container.appendChild(list);
+  }
+  el.appendChild(container);
+}
+
+function showLogModal() {
+  let skillId='', note='';
+  const chipRow = h('div',{className:'chip-row'});
+  data.skills.forEach(sk=>{
+    const chip = h('button',{className:'chip',onClick:()=>{skillId=sk.id;chipRow.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));chip.classList.add('active');}},sk.emoji+' '+sk.name);
+    chipRow.appendChild(chip);
+  });
+  const noteInput = h('textarea',{className:'text-input',placeholder:'Notater (valgfritt)...',style:{height:'60px'},onInput:e=>{note=e.target.value;}});
+
+  showModal(h('div',{},
+    h('h3',{className:'modal-title'},'🏋️ Logg trening'),
+    h('p',{style:{fontSize:'12px',color:'rgba(255,255,255,0.4)',marginBottom:'6px'}},'Hva trente du på?'),
+    chipRow, noteInput,
+    h('div',{className:'modal-actions'},
+      h('button',{className:'btn-secondary',onClick:closeModal},'Avbryt'),
+      h('button',{className:'btn-primary',onClick:()=>{
+        if(!skillId)return;
+        data.log.push({id:Date.now().toString(),date:today(),skillId,note});
+        saveData();closeModal();render();
+      }},'Lagre')
+    )
+  ));
+}
+
+function renderDiary() {
+  const el = document.getElementById('view-diary');
+  el.innerHTML = '';
+  const moods = ['😊','💪','😤','😅','🥳','😴'];
+  let mood='😊', text='';
+
+  const container = h('div',{className:'fade-in'},
+    h('h2',{className:'page-title'},'📝 Treningsdagbok'),
+    h('p',{className:'page-sub'},'Skriv ned hva du tenker og føler etter trening!')
+  );
+
+  const form = h('div',{className:'diary-form'});
+  const moodRow = h('div',{className:'mood-row'});
+  moods.forEach(m=>{
+    const btn = h('button',{className:'mood-btn'+(m==='😊'?' active':''),onClick:()=>{mood=m;moodRow.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}},m);
+    moodRow.appendChild(btn);
+  });
+  form.appendChild(moodRow);
+  const ta = h('textarea',{className:'text-input',placeholder:'Hvordan var treningen i dag? Hva gikk bra? Hva sa treneren?',style:{height:'70px'},onInput:e=>{text=e.target.value;}});
+  form.appendChild(ta);
+  form.appendChild(h('button',{className:'btn-primary',style:{marginTop:'8px'},onClick:()=>{
+    if(!text.trim())return;
+    data.diary.unshift({id:Date.now().toString(),date:today(),mood,text:text.trim()});
+    saveData();render();
+  }},'Lagre i dagboken'));
+  container.appendChild(form);
+
+  if(!data.diary.length){
+    container.appendChild(h('div',{className:'empty-state'},h('div',{className:'icon'},'📝'),h('p',{},'Dagboken er tom. Skriv ditt første innlegg!')));
+  } else {
+    const list = h('div',{className:'log-list'});
+    data.diary.forEach(e=>{
+      list.appendChild(h('div',{className:'diary-item'},
+        h('div',{className:'diary-top'},h('span',{className:'diary-mood'},e.mood),h('span',{className:'log-date'},e.date)),
+        h('p',{className:'diary-text'},e.text)
+      ));
+    });
+    container.appendChild(list);
+  }
+  el.appendChild(container);
+}
+
+function renderBadges() {
+  const el = document.getElementById('view-badges');
+  el.innerHTML = '';
+  const earned = getEarnedBadges();
+
+  const container = h('div',{className:'fade-in'},
+    h('h2',{className:'page-title'},'🏅 Mine badges'),
+    h('p',{className:'page-sub'},'Fullfør delmål og tren jevnlig for å låse opp badges!')
+  );
+
+  const grid = h('div',{className:'badge-grid'});
+  BADGES.forEach(b=>{
+    const e = earned.find(eb=>eb.id===b.id);
+    grid.appendChild(h('div',{className:'badge-card'+(e?'':' locked')},
+      h('span',{className:'badge-emoji'},e?b.emoji:'🔒'),
+      h('span',{className:'badge-name'},b.name),
+      h('span',{className:'badge-desc'},b.desc)
+    ));
+  });
+  container.appendChild(grid);
+  el.appendChild(container);
+}
+
+// ===== MAIN RENDER =====
+function render() {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const activeId = selectedSkillId ? 'view-detail' : 'view-'+currentView;
+  document.getElementById(activeId).classList.add('active');
+
+  updateStats();
+  renderNav();
+
+  if(selectedSkillId) renderDetail();
+  else switch(currentView){
+    case 'dashboard': renderDashboard(); break;
+    case 'competition': renderCompetition(); break;
+    case 'log': renderLog(); break;
+    case 'diary': renderDiary(); break;
+    case 'badges': renderBadges(); break;
+  }
+}
+
+// ===== INIT =====
+loadData();
+render();
+</script>
+</body>
+</html>
